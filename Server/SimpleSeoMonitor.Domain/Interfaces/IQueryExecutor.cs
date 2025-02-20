@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SimpleSeoMonitor.Domain.Interfaces
+﻿namespace SimpleSeoMonitor.Domain.Interfaces
 {
-    interface IQueryExecutor
+    public interface IQueryExecutor
     {
+        Task<TResult> ExecuteAsync<TResult>(IQuery<TResult> query, CancellationToken cancellationToken = default);
     }
 }
