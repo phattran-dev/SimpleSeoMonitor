@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SimpleSEOMonitor.Application.Queries.GetSEOIndexes
+﻿namespace SimpleSEOMonitor.Application.Queries.GetSEOIndexes
 {
-    class GetSEOIndexesQuery
+    public class GetSEOIndexesQuery
     {
     }
 }

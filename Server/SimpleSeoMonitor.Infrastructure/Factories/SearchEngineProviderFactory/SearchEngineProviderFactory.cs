@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SimpleSeoMonitor.Domain.Shared.Enums;
+using SimpleSeoMonitor.Infrastructure.Services.SearchEngineProviders.Interfaces;
 
 namespace SimpleSeoMonitor.Infrastructure.Factories.SearchEngineProvider
 {
-    class SearchEngineProviderFactory
+    public class SearchEngineProviderFactory : ISearchEngineProviderFactory
     {
+        public ISearchEngineProvider CreateSearchEngineProvider(SearchEngineType searchEngineType)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

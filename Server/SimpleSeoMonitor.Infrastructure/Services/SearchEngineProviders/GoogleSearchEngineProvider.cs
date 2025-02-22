@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SimpleSeoMonitor.Infrastructure.Services.SearchEngineProviders.Interfaces;
 
 namespace SimpleSeoMonitor.Infrastructure.Services.SearchEngineProviders
 {
-    class GoogleSearchEngineProvider
+    public class GoogleSearchEngineProvider(HttpClient httpClient) : ISearchEngineProvider
     {
+        private readonly HttpClient _httpClient = httpClient;
+        public Task<List<int>?> GetSEOIndexesAsync(string url, string keyword, CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

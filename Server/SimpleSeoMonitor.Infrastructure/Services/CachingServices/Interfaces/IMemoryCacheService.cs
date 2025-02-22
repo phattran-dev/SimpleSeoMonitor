@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SimpleSeoMonitor.Infrastructure.Services.CachingServices.Interfaces
+﻿namespace SimpleSeoMonitor.Infrastructure.Services.CachingServices.Interfaces
 {
-    interface IMemoryCacheService
+    public interface IMemoryCacheService
     {
+        Task<T> SetCacheAsync<T>(string key, T value, CancellationToken cancellationToken = default);
+        Task<T?> GetCacheAsync<T>(string key, CancellationToken cancellationToken = default);
+        Task<bool> RemoveCacheAsync(string key, CancellationToken cancellationToken = default);
     }
 }

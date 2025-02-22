@@ -1,6 +1,6 @@
 ﻿namespace SimpleSeoMonitor.Domain.Interfaces
 {
-    interface IQuery<TResult>
+    public interface IQuery<TResult>
     {
     }
 }

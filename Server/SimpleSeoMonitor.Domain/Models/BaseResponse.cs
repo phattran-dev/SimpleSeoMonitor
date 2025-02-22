@@ -12,7 +12,7 @@ namespace SimpleSeoMonitor.Domain.Models
         public TData? Data { get; set; }
         public string? ErrorMessages { get; set; }
 
-        public static BaseResponse<TData> Success(TData data)
+        public static BaseResponse<TData> Success(TData? data)
         {
             return new BaseResponse<TData>
             {
