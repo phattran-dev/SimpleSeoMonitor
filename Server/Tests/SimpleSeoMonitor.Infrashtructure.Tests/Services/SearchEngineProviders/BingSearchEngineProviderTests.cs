@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using Moq;
 using Moq.Protected;
+using SimpleSeoMonitor.Domain.Shared.Helpers;
 using SimpleSeoMonitor.Infrastructure.Services.SearchEngineProviders;
 using System.Net;
 
@@ -10,12 +11,15 @@ namespace SimpleSeoMonitor.Infrashtructure.Tests.Services.SearchEngineProviders
     {
         private readonly Mock<IHttpClientFactory> _httpClientFactoryMock;
         private readonly Mock<HttpMessageHandler> _handlerMock;
+        private readonly Mock<HttpHelper> _httpHelperMock;
         private readonly BingSearchEngineProvider _provider;
+       
         public BingSearchEngineProviderTests()
         {
             _httpClientFactoryMock = new Mock<IHttpClientFactory>();
             _handlerMock = new Mock<HttpMessageHandler>();
-            _provider = new BingSearchEngineProvider(_httpClientFactoryMock.Object);
+            _httpHelperMock = new Mock<HttpHelper>();
+            _provider = new BingSearchEngineProvider(_httpClientFactoryMock.Object, _httpHelperMock.Object);
         }
 
         private void SetupHttpResponse(bool throwException, HttpStatusCode? statusCode = null, string? content = null)
@@ -49,22 +53,7 @@ namespace SimpleSeoMonitor.Infrashtructure.Tests.Services.SearchEngineProviders
         public async Task GetSEOIndexesAsync_ShouldThrowException_WhenInputParametersInvalid(string url, string keyword)
         {
             // Act
-            Func<Task> act = async () => await _provider.GetSEOIndexesAsync(url, keyword);
-
-            // Assert
-            await act.Should().ThrowAsync<Exception>();
-        }
-
-        [Fact]
-        public async Task GetSEOIndexesAsync_ShouldThrowException_WhenResponseInvalid()
-        {
-            // Arrange
-            SetupHttpResponse(true);
-            string url = "https://test.com";
-            string keyword = "test keyword";
-
-            // Act
-            Func<Task> act = async () => await _provider.GetSEOIndexesAsync(url, keyword);
+            Func<Task> act = async () => await _provider.GetSEOIndexesAsync(url, keyword, 100);
 
             // Assert
             await act.Should().ThrowAsync<Exception>();

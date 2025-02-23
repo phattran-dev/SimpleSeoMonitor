@@ -2,6 +2,6 @@
 {
     public interface ISearchEngineProvider
     {
-        Task<List<int>?> GetSEOIndexesAsync(string url, string keyword, CancellationToken cancellationToken = default);
+        Task<List<int>?> GetSEOIndexesAsync(string targetWebsite, string keyword, int limitSearchResults, CancellationToken cancellationToken = default);
     }
 }

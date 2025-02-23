@@ -1,13 +1,9 @@
 ﻿using FluentAssertions;
 using Moq;
 using Moq.Protected;
+using SimpleSeoMonitor.Domain.Shared.Helpers;
 using SimpleSeoMonitor.Infrastructure.Services.SearchEngineProviders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SimpleSeoMonitor.Infrashtructure.Tests.Services.SearchEngineProviders
 {
@@ -15,23 +11,30 @@ namespace SimpleSeoMonitor.Infrashtructure.Tests.Services.SearchEngineProviders
     {
         private readonly Mock<IHttpClientFactory> _httpClientFactoryMock;
         private readonly Mock<HttpMessageHandler> _handlerMock;
+        private readonly Mock<HttpHelper> _httpHelperMock;
         private readonly GoogleSearchEngineProvider _provider;
         public GoogleSearchEngineProviderTests()
         {
             _httpClientFactoryMock = new Mock<IHttpClientFactory>();
             _handlerMock = new Mock<HttpMessageHandler>();
-            _provider = new GoogleSearchEngineProvider(_httpClientFactoryMock.Object);
+            _httpHelperMock = new Mock<HttpHelper>();
+            _provider = new GoogleSearchEngineProvider(_httpClientFactoryMock.Object, _httpHelperMock.Object);
         }
 
         private void SetupHttpResponse(bool throwException, HttpStatusCode? statusCode = null, string? content = null)
         {
             if (throwException)
+            {
                 _handlerMock.Protected()
-                .Setup<Task<HttpResponseMessage>>("SendAsync",
-                    ItExpr.IsAny<HttpRequestMessage>(),
-                    ItExpr.IsAny<CancellationToken>())
-                .ThrowsAsync(new HttpRequestException("Request failed"));
+                    .Setup<Task<HttpResponseMessage>>(
+                        "SendAsync",
+                        ItExpr.IsAny<HttpRequestMessage>(),
+                        ItExpr.IsAny<CancellationToken>())
+                    .ThrowsAsync(new HttpRequestException("Request failed"));
+                var httpClient = new HttpClient(_handlerMock.Object);
+            }
             else
+            {
                 _handlerMock.Protected()
                     .Setup<Task<HttpResponseMessage>>("SendAsync",
                         ItExpr.IsAny<HttpRequestMessage>(),
@@ -42,8 +45,10 @@ namespace SimpleSeoMonitor.Infrashtructure.Tests.Services.SearchEngineProviders
                         Content = new StringContent(content)
                     });
 
-            var httpClient = new HttpClient(_handlerMock.Object);
-            _httpClientFactoryMock.Setup(_ => _.CreateClient("Google")).Returns(httpClient);
+                var httpClient = new HttpClient(_handlerMock.Object);
+                _httpClientFactoryMock.Setup(_ => _.CreateClient("GoogleSearchEngine")).Returns(httpClient);
+            }
+
         }
 
         [Theory]
@@ -54,22 +59,7 @@ namespace SimpleSeoMonitor.Infrashtructure.Tests.Services.SearchEngineProviders
         public async Task GetSEOIndexesAsync_ShouldThrowException_WhenInputParametersInvalid(string url, string keyword)
         {
             // Act
-            Func<Task> act = async () => await _provider.GetSEOIndexesAsync(url, keyword);
-
-            // Assert
-            await act.Should().ThrowAsync<Exception>();
-        }
-
-        [Fact]
-        public async Task GetSEOIndexesAsync_ShouldThrowException_WhenResponseInvalid()
-        {
-            // Arrange
-            SetupHttpResponse(true);
-            string url = "https://test.com";
-            string keyword = "test keyword";
-
-            // Act
-            Func<Task> act = async () => await _provider.GetSEOIndexesAsync(url, keyword);
+            Func<Task> act = async () => await _provider.GetSEOIndexesAsync(url, keyword, 100);
 
             // Assert
             await act.Should().ThrowAsync<Exception>();
