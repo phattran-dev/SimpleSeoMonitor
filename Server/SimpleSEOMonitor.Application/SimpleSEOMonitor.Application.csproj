@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\SimpleSeoMonitor.Domain\SimpleSeoMonitor.Domain.csproj" />
+    <ProjectReference Include="..\SimpleSeoMonitor.Infrastructure\SimpleSeoMonitor.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>

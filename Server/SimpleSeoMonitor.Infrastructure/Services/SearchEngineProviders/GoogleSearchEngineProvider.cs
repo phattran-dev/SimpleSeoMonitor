@@ -1,9 +1,10 @@
 ﻿using SimpleSeoMonitor.Domain.Shared.Helpers;
+using SimpleSeoMonitor.Domain.Shared.Helpers.Interfaces;
 using SimpleSeoMonitor.Infrastructure.Services.SearchEngineProviders.Interfaces;
 
 namespace SimpleSeoMonitor.Infrastructure.Services.SearchEngineProviders
 {
-    public class GoogleSearchEngineProvider(IHttpClientFactory _httpClientFactory, HttpHelper _httpHelpers) : ISearchEngineProvider
+    public class GoogleSearchEngineProvider(IHttpClientFactory _httpClientFactory, IHttpHelper _httpHelpers, IRegexHelper _regexHelper) : ISearchEngineProvider
     {
         /// <summary>
         /// q: keyword
@@ -13,7 +14,7 @@ namespace SimpleSeoMonitor.Infrastructure.Services.SearchEngineProviders
         private readonly string searchQuery = "search?q={0}&start={1}&num={2}";
         private readonly int totalItemPerPage = 1;
 
-        public async Task<List<int>?> GetSEOIndexesAsync(string targetWebsite, string keyword, int limitSearchResults, CancellationToken cancellationToken = default)
+        public async Task<List<int>?> GetSEOIndexesAsync(string? targetWebsite, string? keyword, int limitSearchResults, CancellationToken cancellationToken = default)
         {
             #region Validate Inputs
             if (string.IsNullOrWhiteSpace(targetWebsite))
@@ -26,7 +27,7 @@ namespace SimpleSeoMonitor.Infrastructure.Services.SearchEngineProviders
                 return null;
 
             var baseTargetWebsite = string.Empty;
-            if (!RegexHelper.IsValidUrl(targetWebsite, out baseTargetWebsite))
+            if (!_regexHelper.IsValidUrl(targetWebsite, out baseTargetWebsite))
                 throw new Exception("Url is invalid!");
             #endregion Validate Inputs
 

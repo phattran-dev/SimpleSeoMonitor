@@ -1,22 +1,30 @@
-﻿using SimpleSeoMonitor.Infrastructure.Services.CachingServices.Interfaces;
+﻿using Microsoft.Extensions.Caching.Memory;
+using SimpleSeoMonitor.Infrastructure.Services.CachingServices.Interfaces;
 
 namespace SimpleSeoMonitor.Infrastructure.Services.CachingServices
 {
-    public class MemoryCacheService : IMemoryCacheService
+    public class MemoryCacheService(IMemoryCache _cache) : ICacheService
     {
-        public Task<T?> GetCacheAsync<T>(string key, CancellationToken cancellationToken = default)
+        public async Task<T> SetCacheAsync<T>(string key, T value, TimeSpan expiration, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            var cacheEntryOptions = new MemoryCacheEntryOptions
+            {
+                AbsoluteExpirationRelativeToNow = expiration
+            };
+
+            _cache.Set(key, value, cacheEntryOptions);
+            return value;
         }
 
-        public Task<bool> RemoveCacheAsync(string key, CancellationToken cancellationToken = default)
+        public async Task<T?> GetCacheAsync<T>(string key, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            return _cache.TryGetValue(key, out T? value) ? value : default;
         }
 
-        public Task<T> SetCacheAsync<T>(string key, T value, CancellationToken cancellationToken = default)
+        public async Task<bool> RemoveCacheAsync(string key, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            _cache.Remove(key);
+            return true;
         }
     }
 }

@@ -1,7 +1,8 @@
 using Scalar.AspNetCore;
+using SimpleSEOMonitor.API.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
-
+var configuration = builder.Configuration;
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -9,6 +10,11 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
 builder.Services.AddHttpClient();
+
+builder.Services.RegistryQueryExecutor(configuration)
+    .AddServicesAndHelpers()
+    .RegistryQueryHandlers()
+    .RegistryHttpClient();
 
 var app = builder.Build();
 

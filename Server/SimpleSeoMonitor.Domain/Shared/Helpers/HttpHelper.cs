@@ -1,8 +1,9 @@
-﻿using System.Text.RegularExpressions;
+﻿using SimpleSeoMonitor.Domain.Shared.Helpers.Interfaces;
+using System.Text.RegularExpressions;
 
 namespace SimpleSeoMonitor.Domain.Shared.Helpers
 {
-    public class HttpHelper
+    public sealed class HttpHelper : IHttpHelper
     {
         public async Task<string?> FetchHtmlContentAsync(HttpClient _httpClient, string requestUri, CancellationToken cancellationToken = default)
         {

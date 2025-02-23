@@ -1,17 +1,18 @@
-﻿using System.Text.RegularExpressions;
+﻿using SimpleSeoMonitor.Domain.Shared.Helpers.Interfaces;
+using System.Text.RegularExpressions;
 
 namespace SimpleSeoMonitor.Domain.Shared.Helpers
 {
-    public static class RegexHelper
+    public sealed class RegexHelper : IRegexHelper
     {
-        public static bool IsValidUrl(string url, out string baseUrl)
+        public bool IsValidUrl(string url, out string baseUrl)
         {
             string pattern = @"^(https?|ftp):\/\/([^\/]+)";
             Match match = Regex.Match(url, pattern, RegexOptions.IgnoreCase);
 
             if(match.Success)
             {
-                baseUrl = match.Value;
+                baseUrl = match.Groups[2].Value;
                 return true;
             }
 

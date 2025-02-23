@@ -1,54 +1,22 @@
 ﻿using FluentAssertions;
 using Moq;
-using Moq.Protected;
-using SimpleSeoMonitor.Domain.Shared.Helpers;
+using SimpleSeoMonitor.Domain.Shared.Helpers.Interfaces;
 using SimpleSeoMonitor.Infrastructure.Services.SearchEngineProviders;
-using System.Net;
 
 namespace SimpleSeoMonitor.Infrashtructure.Tests.Services.SearchEngineProviders
 {
     public class GoogleSearchEngineProviderTests
     {
         private readonly Mock<IHttpClientFactory> _httpClientFactoryMock;
-        private readonly Mock<HttpMessageHandler> _handlerMock;
-        private readonly Mock<HttpHelper> _httpHelperMock;
+        private readonly Mock<IHttpHelper> _httpHelperMock;
+        private readonly Mock<IRegexHelper> _regexHelperMock;
         private readonly GoogleSearchEngineProvider _provider;
         public GoogleSearchEngineProviderTests()
         {
             _httpClientFactoryMock = new Mock<IHttpClientFactory>();
-            _handlerMock = new Mock<HttpMessageHandler>();
-            _httpHelperMock = new Mock<HttpHelper>();
-            _provider = new GoogleSearchEngineProvider(_httpClientFactoryMock.Object, _httpHelperMock.Object);
-        }
-
-        private void SetupHttpResponse(bool throwException, HttpStatusCode? statusCode = null, string? content = null)
-        {
-            if (throwException)
-            {
-                _handlerMock.Protected()
-                    .Setup<Task<HttpResponseMessage>>(
-                        "SendAsync",
-                        ItExpr.IsAny<HttpRequestMessage>(),
-                        ItExpr.IsAny<CancellationToken>())
-                    .ThrowsAsync(new HttpRequestException("Request failed"));
-                var httpClient = new HttpClient(_handlerMock.Object);
-            }
-            else
-            {
-                _handlerMock.Protected()
-                    .Setup<Task<HttpResponseMessage>>("SendAsync",
-                        ItExpr.IsAny<HttpRequestMessage>(),
-                        ItExpr.IsAny<CancellationToken>())
-                    .ReturnsAsync(new HttpResponseMessage
-                    {
-                        StatusCode = statusCode ?? HttpStatusCode.OK,
-                        Content = new StringContent(content)
-                    });
-
-                var httpClient = new HttpClient(_handlerMock.Object);
-                _httpClientFactoryMock.Setup(_ => _.CreateClient("GoogleSearchEngine")).Returns(httpClient);
-            }
-
+            _httpHelperMock = new Mock<IHttpHelper>();
+            _regexHelperMock = new Mock<IRegexHelper>();
+            _provider = new GoogleSearchEngineProvider(_httpClientFactoryMock.Object, _httpHelperMock.Object, _regexHelperMock.Object);
         }
 
         [Theory]

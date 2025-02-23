@@ -11,4 +11,9 @@
     <PackageReference Include="Scalar.AspNetCore" Version="2.0.15" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\SimpleSEOMonitor.Application\SimpleSEOMonitor.Application.csproj" />
+    <ProjectReference Include="..\SimpleSeoMonitor.Domain\SimpleSeoMonitor.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
