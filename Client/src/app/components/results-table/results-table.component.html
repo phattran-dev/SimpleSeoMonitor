@@ -1,0 +1,14 @@
+<table class="results-table">
+  <thead>
+    <tr>
+      <th>Search Engine</th>
+      <th>Positions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let result of results">
+      <td>{{ result.searchEngineTypeName }}</td>
+      <td>{{ result.positions.join(', ') }}</td>
+    </tr>
+  </tbody>
+</table>

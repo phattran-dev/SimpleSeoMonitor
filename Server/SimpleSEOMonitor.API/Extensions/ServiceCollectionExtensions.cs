@@ -37,7 +37,6 @@ namespace SimpleSEOMonitor.API.Extensions
             services.AddSingleton<ISearchEngineProviderFactory, SearchEngineProviderFactory>();
             services.AddTransient<ISearchEngineProvider, GoogleSearchEngineProvider>();
             services.AddTransient<ISearchEngineProvider, BingSearchEngineProvider>();
-            services.AddSingleton<ICacheService, MemoryCacheService>();
             #endregion Services
 
             return services;

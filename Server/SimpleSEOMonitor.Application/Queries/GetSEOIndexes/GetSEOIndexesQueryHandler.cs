@@ -21,6 +21,7 @@ namespace SimpleSEOMonitor.Application.Queries.GetSEOIndexes
                 var result = new List<int>();
                 var searchEngineProvider = _searchEngineProviderFactory.CreateSearchEngineProvider(query.SearchEngineType);
                 result = await searchEngineProvider.GetSEOIndexesAsync(query.TargetWebsite, query.Keyword, limitResultSearch, cancellationToken);
+                await _cacheService.SetCacheAsync(cacheKey, result, TimeSpan.FromHours(1));
 
                 return BaseResponse<List<int>>.Success(result);
             }

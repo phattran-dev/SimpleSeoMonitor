@@ -7,12 +7,12 @@ namespace SimpleSeoMonitor.Domain.Shared.Helpers
     {
         public bool IsValidUrl(string url, out string baseUrl)
         {
-            string pattern = @"^(https?|ftp):\/\/([^\/]+)";
+            string pattern = @"^(?:https?:\/\/)?([\w-]+\.[\w.-]+)(?:[\/\s]|$)";
             Match match = Regex.Match(url, pattern, RegexOptions.IgnoreCase);
 
-            if(match.Success)
+            if (match.Success)
             {
-                baseUrl = match.Groups[2].Value;
+                baseUrl = string.IsNullOrWhiteSpace(match.Groups[2].Value) ? match.Groups[1].Value : match.Groups[2].Value;
                 return true;
             }
 

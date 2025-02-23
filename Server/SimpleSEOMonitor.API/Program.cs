@@ -11,6 +11,16 @@ builder.Services.AddOpenApi();
 
 builder.Services.AddHttpClient();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowMyOrigin",
+    builder => builder
+        .SetIsOriginAllowed((origin) => true)
+        .AllowAnyHeader()
+        .AllowAnyMethod()
+    );
+});
+
 builder.Services.RegistryQueryExecutor(configuration)
     .AddServicesAndHelpers()
     .RegistryQueryHandlers()
@@ -26,6 +36,13 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors(builder =>
+{
+    builder.AllowAnyHeader();
+    builder.AllowAnyMethod();
+    builder.AllowAnyOrigin();
+});
 
 app.UseAuthorization();
 
