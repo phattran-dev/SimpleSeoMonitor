@@ -2,9 +2,8 @@
 
 namespace SimpleSeoMonitor.Infrastructure.Services.SearchEngineProviders
 {
-    public class GoogleSearchEngineProvider(HttpClient httpClient) : ISearchEngineProvider
+    public class GoogleSearchEngineProvider(IHttpClientFactory _httpClientFactory) : ISearchEngineProvider
     {
-        private readonly HttpClient _httpClient = httpClient;
         public Task<List<int>?> GetSEOIndexesAsync(string url, string keyword, CancellationToken cancellationToken = default)
         {
             throw new NotImplementedException();

@@ -2,9 +2,8 @@
 
 namespace SimpleSeoMonitor.Infrastructure.Services.SearchEngineProviders
 {
-    public class BingSearchEngineProvider(HttpClient httpClient) : ISearchEngineProvider
+    public class BingSearchEngineProvider(IHttpClientFactory _httpClientFactory) : ISearchEngineProvider
     {
-        private readonly HttpClient _httpClient = httpClient;
         public Task<List<int>?> GetSEOIndexesAsync(string url, string keyword, CancellationToken cancellationToken = default)
         {
             throw new NotImplementedException();

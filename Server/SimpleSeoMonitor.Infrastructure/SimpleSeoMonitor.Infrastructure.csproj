@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\SimpleSeoMonitor.Domain\SimpleSeoMonitor.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
