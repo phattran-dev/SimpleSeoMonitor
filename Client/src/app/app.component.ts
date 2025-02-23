@@ -26,7 +26,7 @@ export class AppComponent {
 
     this.seoMonitorService.getSeoIndexes(query).subscribe({
       next: (response) => {
-        if (response.isSuccess && response.data) {
+        if (response.isSuccess) {
           switch (query.searchEngineType) {
             case SearchEngineType.Google:
               this.searchResults = [{ searchEngineTypeName: "Google", positions: response.data }]
@@ -37,8 +37,8 @@ export class AppComponent {
               break;
           }
 
-        } else if (response.errorMessages?.length) {
-          this.errorMessages = response.errorMessages;
+        } else {
+          this.errorMessages = response.errorMessages ?? '';
           console.log('API Error:', response.errorMessages);
         }
       },
